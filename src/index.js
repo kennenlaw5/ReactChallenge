@@ -1,12 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import GoGame from './go';
+import TicTacToeGame from './tic-tac-toe';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class Game extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedGame: null,
+        };
+    }
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+    render () {
+        return (
+            <div className={'container'} style={{textAlign: 'center'}}>
+                <div style={{marginBottom: '10px'}}>
+                    <label htmlFor="versus">Game: </label>
+                    <div className='select is-small' style={{marginBottom: '3px'}}>
+                        <select className='dropdown'
+                                style={{borderRadius: '2px', fontSize: '12px', padding: '0px 30px 0px 6px'}}
+                                name="selectedGame" id="selectedGame" onChange={(e) => {
+                            this.setState({selectedGame: e.target.value});
+                        }} value={this.state.selectedGame} placeholder='Select Game...'>
+                            <option value="none">Select Game...</option>
+                            <option value="GoGame">Go</option>
+                            <option value="TicTacToeGame">Tic-Tac-Toe</option>
+                        </select>
+                    </div>
+                </div>
+                {this.state.selectedGame === 'GoGame' ? <GoGame/>
+                : this.state.selectedGame === 'TicTacToeGame' ? <TicTacToeGame/>
+                : <p>Please select a game!</p>}
+            </div>
+        )
+    };
+}
+
+ReactDOM.render(<Game/>, document.getElementById('root'));
